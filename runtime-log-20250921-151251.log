@@ -1,0 +1,178 @@
+timestamp,message
+2025-09-21 15:07:16,[Zeabur] Pod/build-68d014a051b7e675506fa82c-fkppj - Scheduled: Successfully assigned environment-68d00e7559ccf3857a3794b3/build-68d014a051b7e675506fa82c-fkppj to ip-172-31-24-117.eu-central-1.compute.internal
+2025-09-21 15:07:17,"[Zeabur] Pod/build-68d014a051b7e675506fa82c-fkppj - Pulling: Pulling image ""793407052998.dkr.ecr.eu-central-1.amazonaws.com/zeabur/builder:latest"""
+2025-09-21 15:07:17,"[Zeabur] Pod/build-68d014a051b7e675506fa82c-fkppj - Pulled: Successfully pulled image ""793407052998.dkr.ecr.eu-central-1.amazonaws.com/zeabur/builder:latest"" in 128ms (128ms including waiting). Image size: 132021369 bytes."
+2025-09-21 15:07:17,[Zeabur] Pod/build-68d014a051b7e675506fa82c-fkppj - Created: Created container: builder
+2025-09-21 15:07:17,[Zeabur] Pod/build-68d014a051b7e675506fa82c-fkppj - Started: Started container builder
+2025-09-21 15:10:07,[Zeabur] Pod/service-68d010595dbd47063653b7c8-777f7d7b59-9hhn7 - Scheduled: Successfully assigned environment-68d00e7559ccf3857a3794b3/service-68d010595dbd47063653b7c8-777f7d7b59-9hhn7 to ip-172-31-31-243.eu-central-1.compute.internal
+2025-09-21 15:10:07,"[Zeabur] Pod/service-68d010595dbd47063653b7c8-777f7d7b59-9hhn7 - Pulling: Pulling image ""registry-oci.zeabur.cloud/e-68d00e7559ccf3857a3794b3/s-68d010595dbd47063653b7c8:d-68d014a051b7e675506fa82c"""
+2025-09-21 15:10:26,"[Zeabur] Pod/service-68d010595dbd47063653b7c8-777f7d7b59-9hhn7 - Pulled: Successfully pulled image ""registry-oci.zeabur.cloud/e-68d00e7559ccf3857a3794b3/s-68d010595dbd47063653b7c8:d-68d014a051b7e675506fa82c"" in 18.636s (18.636s including waiting). Image size: 418172308 bytes."
+2025-09-21 15:10:26,[Zeabur] Pod/service-68d010595dbd47063653b7c8-777f7d7b59-9hhn7 - Created: Created container: trendradar
+2025-09-21 15:10:26,[Zeabur] Pod/service-68d010595dbd47063653b7c8-777f7d7b59-9hhn7 - Started: Started container trendradar
+2025-09-21 15:10:26,正在加载配置...
+2025-09-21 15:10:26,配置文件加载成功: /app/config/config.yaml
+2025-09-21 15:10:26,Webhook 配置来源: 钉钉(环境变量)
+2025-09-21 15:10:26,TrendRadar v2.2.0 配置加载完成
+2025-09-21 15:10:26,监控平台数量: 11
+2025-09-21 15:10:26,本地环境，未启用代理
+2025-09-21 15:10:26,当前北京时间: 2025-09-21 23:10:26
+2025-09-21 15:10:26,通知功能已启用，将发送webhook通知
+2025-09-21 15:10:26,报告模式: incremental
+2025-09-21 15:10:26,运行模式: 增量模式（只关注新增新闻，无新增时不推送）
+2025-09-21 15:10:26,"配置的监控平台: ['今日头条', '百度热搜', '华尔街见闻', '澎湃新闻', 'bilibili 热搜', '财联社热门', '凤凰网', '贴吧', '微博', '抖音', '知乎']"
+2025-09-21 15:10:26,开始爬取数据，请求间隔 1000 毫秒
+2025-09-21 15:10:26,获取 toutiao 成功（最新数据）
+2025-09-21 15:10:28,获取 baidu 成功（最新数据）
+2025-09-21 15:10:29,获取 wallstreetcn-hot 成功（最新数据）
+2025-09-21 15:10:30,获取 thepaper 成功（最新数据）
+2025-09-21 15:10:31,获取 bilibili-hot-search 成功（最新数据）
+2025-09-21 15:10:33,获取 cls-hot 成功（缓存数据）
+2025-09-21 15:10:34,获取 ifeng 成功（最新数据）
+2025-09-21 15:10:35,获取 tieba 成功（最新数据）
+2025-09-21 15:10:37,获取 weibo 成功（缓存数据）
+2025-09-21 15:10:38,获取 douyin 成功（最新数据）
+2025-09-21 15:10:39,获取 zhihu 成功（最新数据）
+2025-09-21 15:10:39,"成功: ['toutiao', 'baidu', 'wallstreetcn-hot', 'thepaper', 'bilibili-hot-search', 'cls-hot', 'ifeng', 'tieba', 'weibo', 'douyin', 'zhihu'], 失败: []"
+2025-09-21 15:10:39,标题已保存到: output/2025年09月21日/txt/23时10分.txt
+2025-09-21 15:10:39,增量模式：当天第一次爬取，255 条新闻中有 5 条频率词匹配
+2025-09-21 15:10:39,HTML报告已生成: output/2025年09月21日/html/23时10分.html
+2025-09-21 15:10:39,钉钉消息分为 1 批次发送 [实时增量]
+2025-09-21 15:10:39,发送钉钉第 1/1 批次，大小：1669 字节 [实时增量]
+2025-09-21 15:10:40,"[Zeabur] Pod/service-68d010595dbd47063653b7c8-777f7d7b59-9hhn7 - Pulling: Pulling image ""registry-oci.zeabur.cloud/e-68d00e7559ccf3857a3794b3/s-68d010595dbd47063653b7c8:d-68d014a051b7e675506fa82c"""
+2025-09-21 15:10:40,钉钉第 1/1 批次发送成功 [实时增量]
+2025-09-21 15:10:40,钉钉所有 1 批次发送完成 [实时增量]
+2025-09-21 15:10:40,生成当日汇总HTML...
+2025-09-21 15:10:40,"当前监控平台: ['toutiao', 'baidu', 'wallstreetcn-hot', 'thepaper', 'bilibili-hot-search', 'cls-hot', 'ifeng', 'tieba', 'weibo', 'douyin', 'zhihu']"
+2025-09-21 15:10:40,读取到 255 个标题（已按当前监控平台过滤）
+2025-09-21 15:10:40,当日汇总模式：处理 255 条新闻，模式：频率词过滤
+2025-09-21 15:10:40,当日汇总HTML已生成: output/2025年09月21日/html/当日汇总.html
+2025-09-21 15:10:40,汇总报告已生成（Docker环境）: output/2025年09月21日/html/当日汇总.html
+2025-09-21 15:10:41,"[Zeabur] Pod/service-68d010595dbd47063653b7c8-777f7d7b59-9hhn7 - Pulled: Successfully pulled image ""registry-oci.zeabur.cloud/e-68d00e7559ccf3857a3794b3/s-68d010595dbd47063653b7c8:d-68d014a051b7e675506fa82c"" in 369ms (369ms including waiting). Image size: 418172308 bytes."
+2025-09-21 15:10:41,[Zeabur] Pod/service-68d010595dbd47063653b7c8-777f7d7b59-9hhn7 - Created: Created container: trendradar
+2025-09-21 15:10:41,[Zeabur] Pod/service-68d010595dbd47063653b7c8-777f7d7b59-9hhn7 - Started: Started container trendradar
+2025-09-21 15:10:41,正在加载配置...
+2025-09-21 15:10:41,配置文件加载成功: /app/config/config.yaml
+2025-09-21 15:10:41,Webhook 配置来源: 钉钉(环境变量)
+2025-09-21 15:10:41,TrendRadar v2.2.0 配置加载完成
+2025-09-21 15:10:41,监控平台数量: 11
+2025-09-21 15:10:41,本地环境，未启用代理
+2025-09-21 15:10:41,当前北京时间: 2025-09-21 23:10:41
+2025-09-21 15:10:41,通知功能已启用，将发送webhook通知
+2025-09-21 15:10:41,报告模式: incremental
+2025-09-21 15:10:41,运行模式: 增量模式（只关注新增新闻，无新增时不推送）
+2025-09-21 15:10:41,"配置的监控平台: ['今日头条', '百度热搜', '华尔街见闻', '澎湃新闻', 'bilibili 热搜', '财联社热门', '凤凰网', '贴吧', '微博', '抖音', '知乎']"
+2025-09-21 15:10:41,开始爬取数据，请求间隔 1000 毫秒
+2025-09-21 15:10:42,获取 toutiao 成功（最新数据）
+2025-09-21 15:10:43,获取 baidu 成功（最新数据）
+2025-09-21 15:10:44,获取 wallstreetcn-hot 成功（最新数据）
+2025-09-21 15:10:45,获取 thepaper 成功（最新数据）
+2025-09-21 15:10:47,获取 bilibili-hot-search 成功（最新数据）
+2025-09-21 15:10:48,获取 cls-hot 成功（缓存数据）
+2025-09-21 15:10:49,获取 ifeng 成功（最新数据）
+2025-09-21 15:10:50,获取 tieba 成功（最新数据）
+2025-09-21 15:10:52,获取 weibo 成功（缓存数据）
+2025-09-21 15:10:53,获取 douyin 成功（最新数据）
+2025-09-21 15:10:54,获取 zhihu 成功（最新数据）
+2025-09-21 15:10:54,"成功: ['toutiao', 'baidu', 'wallstreetcn-hot', 'thepaper', 'bilibili-hot-search', 'cls-hot', 'ifeng', 'tieba', 'weibo', 'douyin', 'zhihu'], 失败: []"
+2025-09-21 15:10:54,标题已保存到: output/2025年09月21日/txt/23时10分.txt
+2025-09-21 15:10:54,增量模式：当天第一次爬取，255 条新闻中有 5 条频率词匹配
+2025-09-21 15:10:54,HTML报告已生成: output/2025年09月21日/html/23时10分.html
+2025-09-21 15:10:54,钉钉消息分为 1 批次发送 [实时增量]
+2025-09-21 15:10:54,发送钉钉第 1/1 批次，大小：1669 字节 [实时增量]
+2025-09-21 15:10:55,钉钉第 1/1 批次发送成功 [实时增量]
+2025-09-21 15:10:55,钉钉所有 1 批次发送完成 [实时增量]
+2025-09-21 15:10:55,生成当日汇总HTML...
+2025-09-21 15:10:55,"当前监控平台: ['toutiao', 'baidu', 'wallstreetcn-hot', 'thepaper', 'bilibili-hot-search', 'cls-hot', 'ifeng', 'tieba', 'weibo', 'douyin', 'zhihu']"
+2025-09-21 15:10:55,读取到 255 个标题（已按当前监控平台过滤）
+2025-09-21 15:10:55,当日汇总模式：处理 255 条新闻，模式：频率词过滤
+2025-09-21 15:10:55,当日汇总HTML已生成: output/2025年09月21日/html/当日汇总.html
+2025-09-21 15:10:55,汇总报告已生成（Docker环境）: output/2025年09月21日/html/当日汇总.html
+2025-09-21 15:10:56,[Zeabur] Pod/service-68d010595dbd47063653b7c8-777f7d7b59-9hhn7 - BackOff: Back-off restarting failed container trendradar in pod service-68d010595dbd47063653b7c8-777f7d7b59-9hhn7_environment-68d00e7559ccf3857a3794b3(b2257d16-2306-4bb4-80df-9a2ad6c29cd3)
+2025-09-21 15:11:08,"[Zeabur] Pod/service-68d010595dbd47063653b7c8-777f7d7b59-9hhn7 - Pulling: Pulling image ""registry-oci.zeabur.cloud/e-68d00e7559ccf3857a3794b3/s-68d010595dbd47063653b7c8:d-68d014a051b7e675506fa82c"""
+2025-09-21 15:11:08,"[Zeabur] Pod/service-68d010595dbd47063653b7c8-777f7d7b59-9hhn7 - Pulled: Successfully pulled image ""registry-oci.zeabur.cloud/e-68d00e7559ccf3857a3794b3/s-68d010595dbd47063653b7c8:d-68d014a051b7e675506fa82c"" in 379ms (379ms including waiting). Image size: 418172308 bytes."
+2025-09-21 15:11:08,[Zeabur] Pod/service-68d010595dbd47063653b7c8-777f7d7b59-9hhn7 - Created: Created container: trendradar
+2025-09-21 15:11:08,[Zeabur] Pod/service-68d010595dbd47063653b7c8-777f7d7b59-9hhn7 - Started: Started container trendradar
+2025-09-21 15:11:09,正在加载配置...
+2025-09-21 15:11:09,配置文件加载成功: /app/config/config.yaml
+2025-09-21 15:11:09,Webhook 配置来源: 钉钉(环境变量)
+2025-09-21 15:11:09,TrendRadar v2.2.0 配置加载完成
+2025-09-21 15:11:09,监控平台数量: 11
+2025-09-21 15:11:09,本地环境，未启用代理
+2025-09-21 15:11:09,当前北京时间: 2025-09-21 23:11:09
+2025-09-21 15:11:09,通知功能已启用，将发送webhook通知
+2025-09-21 15:11:09,报告模式: incremental
+2025-09-21 15:11:09,运行模式: 增量模式（只关注新增新闻，无新增时不推送）
+2025-09-21 15:11:09,"配置的监控平台: ['今日头条', '百度热搜', '华尔街见闻', '澎湃新闻', 'bilibili 热搜', '财联社热门', '凤凰网', '贴吧', '微博', '抖音', '知乎']"
+2025-09-21 15:11:09,开始爬取数据，请求间隔 1000 毫秒
+2025-09-21 15:11:09,获取 toutiao 成功（最新数据）
+2025-09-21 15:11:10,获取 baidu 成功（最新数据）
+2025-09-21 15:11:11,获取 wallstreetcn-hot 成功（最新数据）
+2025-09-21 15:11:13,获取 thepaper 成功（最新数据）
+2025-09-21 15:11:14,获取 bilibili-hot-search 成功（最新数据）
+2025-09-21 15:11:15,获取 cls-hot 成功（缓存数据）
+2025-09-21 15:11:16,获取 ifeng 成功（最新数据）
+2025-09-21 15:11:18,获取 tieba 成功（最新数据）
+2025-09-21 15:11:19,获取 weibo 成功（缓存数据）
+2025-09-21 15:11:20,获取 douyin 成功（最新数据）
+2025-09-21 15:11:21,获取 zhihu 成功（最新数据）
+2025-09-21 15:11:21,"成功: ['toutiao', 'baidu', 'wallstreetcn-hot', 'thepaper', 'bilibili-hot-search', 'cls-hot', 'ifeng', 'tieba', 'weibo', 'douyin', 'zhihu'], 失败: []"
+2025-09-21 15:11:21,标题已保存到: output/2025年09月21日/txt/23时11分.txt
+2025-09-21 15:11:22,增量模式：当天第一次爬取，255 条新闻中有 5 条频率词匹配
+2025-09-21 15:11:22,HTML报告已生成: output/2025年09月21日/html/23时11分.html
+2025-09-21 15:11:22,钉钉消息分为 1 批次发送 [实时增量]
+2025-09-21 15:11:22,发送钉钉第 1/1 批次，大小：1669 字节 [实时增量]
+2025-09-21 15:11:22,钉钉第 1/1 批次发送成功 [实时增量]
+2025-09-21 15:11:22,钉钉所有 1 批次发送完成 [实时增量]
+2025-09-21 15:11:22,生成当日汇总HTML...
+2025-09-21 15:11:22,"当前监控平台: ['toutiao', 'baidu', 'wallstreetcn-hot', 'thepaper', 'bilibili-hot-search', 'cls-hot', 'ifeng', 'tieba', 'weibo', 'douyin', 'zhihu']"
+2025-09-21 15:11:22,读取到 255 个标题（已按当前监控平台过滤）
+2025-09-21 15:11:22,当日汇总模式：处理 255 条新闻，模式：频率词过滤
+2025-09-21 15:11:22,当日汇总HTML已生成: output/2025年09月21日/html/当日汇总.html
+2025-09-21 15:11:22,汇总报告已生成（Docker环境）: output/2025年09月21日/html/当日汇总.html
+2025-09-21 15:11:23,[Zeabur] Pod/service-68d010595dbd47063653b7c8-777f7d7b59-9hhn7 - BackOff: Back-off restarting failed container trendradar in pod service-68d010595dbd47063653b7c8-777f7d7b59-9hhn7_environment-68d00e7559ccf3857a3794b3(b2257d16-2306-4bb4-80df-9a2ad6c29cd3)
+2025-09-21 15:11:37,[Zeabur] Pod/service-68d010595dbd47063653b7c8-777f7d7b59-9hhn7 - BackOff: Back-off restarting failed container trendradar in pod service-68d010595dbd47063653b7c8-777f7d7b59-9hhn7_environment-68d00e7559ccf3857a3794b3(b2257d16-2306-4bb4-80df-9a2ad6c29cd3)
+2025-09-21 15:11:51,"[Zeabur] Pod/service-68d010595dbd47063653b7c8-777f7d7b59-9hhn7 - Pulling: Pulling image ""registry-oci.zeabur.cloud/e-68d00e7559ccf3857a3794b3/s-68d010595dbd47063653b7c8:d-68d014a051b7e675506fa82c"""
+2025-09-21 15:11:51,"[Zeabur] Pod/service-68d010595dbd47063653b7c8-777f7d7b59-9hhn7 - Pulled: Successfully pulled image ""registry-oci.zeabur.cloud/e-68d00e7559ccf3857a3794b3/s-68d010595dbd47063653b7c8:d-68d014a051b7e675506fa82c"" in 367ms (367ms including waiting). Image size: 418172308 bytes."
+2025-09-21 15:11:51,[Zeabur] Pod/service-68d010595dbd47063653b7c8-777f7d7b59-9hhn7 - Created: Created container: trendradar
+2025-09-21 15:11:51,[Zeabur] Pod/service-68d010595dbd47063653b7c8-777f7d7b59-9hhn7 - Started: Started container trendradar
+2025-09-21 15:11:52,正在加载配置...
+2025-09-21 15:11:52,配置文件加载成功: /app/config/config.yaml
+2025-09-21 15:11:52,Webhook 配置来源: 钉钉(环境变量)
+2025-09-21 15:11:52,TrendRadar v2.2.0 配置加载完成
+2025-09-21 15:11:52,监控平台数量: 11
+2025-09-21 15:11:52,本地环境，未启用代理
+2025-09-21 15:11:52,当前北京时间: 2025-09-21 23:11:52
+2025-09-21 15:11:52,通知功能已启用，将发送webhook通知
+2025-09-21 15:11:52,报告模式: incremental
+2025-09-21 15:11:52,运行模式: 增量模式（只关注新增新闻，无新增时不推送）
+2025-09-21 15:11:52,"配置的监控平台: ['今日头条', '百度热搜', '华尔街见闻', '澎湃新闻', 'bilibili 热搜', '财联社热门', '凤凰网', '贴吧', '微博', '抖音', '知乎']"
+2025-09-21 15:11:52,开始爬取数据，请求间隔 1000 毫秒
+2025-09-21 15:11:52,获取 toutiao 成功（最新数据）
+2025-09-21 15:11:53,获取 baidu 成功（最新数据）
+2025-09-21 15:11:54,获取 wallstreetcn-hot 成功（最新数据）
+2025-09-21 15:11:56,获取 thepaper 成功（最新数据）
+2025-09-21 15:11:57,获取 bilibili-hot-search 成功（最新数据）
+2025-09-21 15:11:58,获取 cls-hot 成功（缓存数据）
+2025-09-21 15:11:59,获取 ifeng 成功（最新数据）
+2025-09-21 15:12:01,获取 tieba 成功（最新数据）
+2025-09-21 15:12:02,获取 weibo 成功（缓存数据）
+2025-09-21 15:12:03,获取 douyin 成功（最新数据）
+2025-09-21 15:12:04,获取 zhihu 成功（最新数据）
+2025-09-21 15:12:04,"成功: ['toutiao', 'baidu', 'wallstreetcn-hot', 'thepaper', 'bilibili-hot-search', 'cls-hot', 'ifeng', 'tieba', 'weibo', 'douyin', 'zhihu'], 失败: []"
+2025-09-21 15:12:04,标题已保存到: output/2025年09月21日/txt/23时12分.txt
+2025-09-21 15:12:04,增量模式：当天第一次爬取，255 条新闻中有 5 条频率词匹配
+2025-09-21 15:12:04,HTML报告已生成: output/2025年09月21日/html/23时12分.html
+2025-09-21 15:12:04,钉钉消息分为 1 批次发送 [实时增量]
+2025-09-21 15:12:04,发送钉钉第 1/1 批次，大小：1669 字节 [实时增量]
+2025-09-21 15:12:05,钉钉第 1/1 批次发送成功 [实时增量]
+2025-09-21 15:12:05,钉钉所有 1 批次发送完成 [实时增量]
+2025-09-21 15:12:05,生成当日汇总HTML...
+2025-09-21 15:12:05,"当前监控平台: ['toutiao', 'baidu', 'wallstreetcn-hot', 'thepaper', 'bilibili-hot-search', 'cls-hot', 'ifeng', 'tieba', 'weibo', 'douyin', 'zhihu']"
+2025-09-21 15:12:05,读取到 255 个标题（已按当前监控平台过滤）
+2025-09-21 15:12:05,当日汇总模式：处理 255 条新闻，模式：频率词过滤
+2025-09-21 15:12:05,当日汇总HTML已生成: output/2025年09月21日/html/当日汇总.html
+2025-09-21 15:12:05,汇总报告已生成（Docker环境）: output/2025年09月21日/html/当日汇总.html
+2025-09-21 15:12:06,[Zeabur] Pod/service-68d010595dbd47063653b7c8-777f7d7b59-9hhn7 - BackOff: Back-off restarting failed container trendradar in pod service-68d010595dbd47063653b7c8-777f7d7b59-9hhn7_environment-68d00e7559ccf3857a3794b3(b2257d16-2306-4bb4-80df-9a2ad6c29cd3)
+2025-09-21 15:12:20,[Zeabur] Pod/service-68d010595dbd47063653b7c8-777f7d7b59-9hhn7 - BackOff: Back-off restarting failed container trendradar in pod service-68d010595dbd47063653b7c8-777f7d7b59-9hhn7_environment-68d00e7559ccf3857a3794b3(b2257d16-2306-4bb4-80df-9a2ad6c29cd3)
+2025-09-21 15:12:32,[Zeabur] Pod/service-68d010595dbd47063653b7c8-777f7d7b59-9hhn7 - BackOff: Back-off restarting failed container trendradar in pod service-68d010595dbd47063653b7c8-777f7d7b59-9hhn7_environment-68d00e7559ccf3857a3794b3(b2257d16-2306-4bb4-80df-9a2ad6c29cd3)
+2025-09-21 15:12:44,[Zeabur] Pod/service-68d010595dbd47063653b7c8-777f7d7b59-9hhn7 - BackOff: Back-off restarting failed container trendradar in pod service-68d010595dbd47063653b7c8-777f7d7b59-9hhn7_environment-68d00e7559ccf3857a3794b3(b2257d16-2306-4bb4-80df-9a2ad6c29cd3)
