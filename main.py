@@ -3209,11 +3209,50 @@ class NewsAnalyzer:
     def _detect_docker_environment(self) -> bool:
         """检测是否运行在 Docker 容器中"""
         try:
+            # 检查环境变量
             if os.environ.get("DOCKER_CONTAINER") == "true":
                 return True
+            
+            # 检查常见的容器环境变量
+            container_env_vars = [
+                "KUBERNETES_SERVICE_HOST",  # Kubernetes
+                "ZEABUR",                   # Zeabur 平台
+                "RAILWAY_ENVIRONMENT",      # Railway 平台
+                "VERCEL",                   # Vercel 平台
+                "RENDER",                   # Render 平台
+                "HEROKU_APP_NAME",         # Heroku 平台
+                "FLY_APP_NAME",            # Fly.io 平台
+                "CONTAINER",               # 通用容器标识
+            ]
+            
+            for env_var in container_env_vars:
+                if os.environ.get(env_var):
+                    return True
 
+            # 检查 /.dockerenv 文件
             if os.path.exists("/.dockerenv"):
                 return True
+
+            # 检查 /proc/1/cgroup 文件（Linux 容器特征）
+            if os.path.exists("/proc/1/cgroup"):
+                try:
+                    with open("/proc/1/cgroup", "r") as f:
+                        content = f.read()
+                        # 检查是否包含容器相关的 cgroup 路径
+                        if any(keyword in content for keyword in ["docker", "containerd", "kubepods", "lxc"]):
+                            return True
+                except Exception:
+                    pass
+
+            # 检查 /proc/self/mountinfo 文件（另一种容器检测方法）
+            if os.path.exists("/proc/self/mountinfo"):
+                try:
+                    with open("/proc/self/mountinfo", "r") as f:
+                        content = f.read()
+                        if "docker" in content or "overlay" in content:
+                            return True
+                except Exception:
+                    pass
 
             return False
         except Exception:
