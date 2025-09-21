@@ -27,16 +27,20 @@ case "${RUN_MODE:-cron}" in
         exit 1
     fi
 
+    # 将 supercronic 放到后台执行
+    echo "⏰ 启动 supercronic (后台运行)"
+    /usr/local/bin/supercronic -passthrough-logs /tmp/crontab &
+
     # 立即执行一次（如果配置了）
     if [ "${IMMEDIATE_RUN:-false}" = "true" ]; then
         echo "▶️ 立即执行一次"
         /usr/local/bin/python main.py
     fi
 
-    echo "⏰ 启动supercronic: ${CRON_SCHEDULE:-*/30 * * * *}"
-    echo "🎯 supercronic 将作为 PID 1 运行"
-    
-    exec /usr/local/bin/supercronic -passthrough-logs /tmp/crontab
+    # 在前台启动一个简单的 http 服务器，用于响应健康检查和提供报告访问
+    echo "🌐 启动内置 Web 服务器以提供报告访问和响应健康检查..."
+    cd /app/output
+    exec python3 -m http.server "${PORT:-8080}"
     ;;
 *)
     exec "$@"
