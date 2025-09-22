@@ -30,17 +30,41 @@ case "${RUN_MODE:-cron}" in
     # 将 supercronic 放到后台执行
     echo "⏰ 启动 supercronic (后台运行)"
     /usr/local/bin/supercronic -passthrough-logs /tmp/crontab &
+    SUPERCRONIC_PID=$!
 
-    # 立即执行一次（如果配置了）
-    if [ "${IMMEDIATE_RUN:-false}" = "true" ]; then
-        echo "▶️ 立即执行一次"
-        /usr/local/bin/python main.py
-    fi
+    cleanup() {
+        set +e
+        if [ -n "${IMMEDIATE_PID:-}" ] && kill -0 "${IMMEDIATE_PID}" 2>/dev/null; then
+            kill "${IMMEDIATE_PID}" 2>/dev/null || true
+        fi
+        if [ -n "${HTTP_PID:-}" ] && kill -0 "${HTTP_PID}" 2>/dev/null; then
+            kill "${HTTP_PID}" 2>/dev/null || true
+        fi
+        if [ -n "${SUPERCRONIC_PID:-}" ] && kill -0 "${SUPERCRONIC_PID}" 2>/dev/null; then
+            kill "${SUPERCRONIC_PID}" 2>/dev/null || true
+        fi
+        wait
+    }
+    trap cleanup EXIT INT TERM
 
-    # 在前台启动一个简单的 http 服务器，用于响应健康检查和提供报告访问
+    # 在后台启动一个简单的 http 服务器，用于响应健康检查和提供报告访问
     echo "🌐 启动内置 Web 服务器以提供报告访问和响应健康检查..."
     cd /app/output
-    exec python3 -m http.server "${PORT:-8080}"
+    python3 -m http.server "${PORT:-8080}" &
+    HTTP_PID=$!
+
+    # 立即执行一次（如果配置了）——在 HTTP 服务启动后触发，确保端口可用
+    if [ "${IMMEDIATE_RUN:-false}" = "true" ]; then
+        echo "▶️ 立即执行一次 (后台运行)"
+        /usr/local/bin/python /app/main.py &
+        IMMEDIATE_PID=$!
+    fi
+
+    # 等待后台任务，避免产生僵尸进程
+    if [ -n "${IMMEDIATE_PID:-}" ]; then
+        wait "${IMMEDIATE_PID}"
+    fi
+    wait "${HTTP_PID}"
     ;;
 *)
     exec "$@"
