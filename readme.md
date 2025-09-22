@@ -875,6 +875,22 @@ docker-compose build
 docker-compose up -d
 ```
 
+### 🌩 Zeabur 部署
+
+在 Zeabur 这类云托管平台上，服务需持续运行并暴露 HTTP 端口以通过健康检查。自 v2.2.0 起，`main.py` 内置了容器运行器，按以下步骤即可部署：
+
+1. **连接代码仓库**：直接关联 GitHub 仓库或上传完整项目，确保 `config/config.yaml` 与 `config/frequency_words.txt` 一并部署。
+2. **启动命令**：使用默认的 `python main.py`。程序会检测到 `ZEABUR` 环境变量并自动进入定时模式（等同于 `RUN_MODE=cron`）。
+3. **环境变量建议**：
+   - `CRON_SCHEDULE=*/30 * * * *`（按需调整执行频率）
+   - `IMMEDIATE_RUN=true`（部署后立即执行一次）
+   - `CRON_TIMEZONE=Asia/Shanghai`（可替换为本地时区）
+   - 如需关闭静态文件服务，可设置 `ENABLE_HTTP_SERVER=false`
+4. **端口配置**：Zeabur 会提供 `PORT` 环境变量，应用会在该端口启动内置 `http.server`，既用于健康检查也用于访问生成的 HTML 报告。
+5. **持久化输出**：`output/` 目录会存放历史 TXT/HTML 报告，建议挂载持久化存储或对象存储，避免容器重建时数据丢失。
+
+若想手动控制运行模式，可显式设置 `RUN_MODE=once`（单次执行）或 `RUN_MODE=cron`（守护 + 定时）。
+
 #### 镜像更新
 
 ```bash

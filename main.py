@@ -4,15 +4,20 @@ import json
 import os
 import random
 import re
+import threading
 import time
+import traceback
 import webbrowser
 from datetime import datetime
+from functools import partial
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Dict, List, Tuple, Optional, Union
 
 import pytz
 import requests
 import yaml
+from croniter import croniter
 
 
 VERSION = "2.2.0"
@@ -3711,19 +3716,203 @@ class NewsAnalyzer:
             raise
 
 
-def main():
+def run_once(raise_errors: bool = True) -> bool:
+    """执行一次分析流程"""
     try:
         analyzer = NewsAnalyzer()
         analyzer.run()
+        return True
     except FileNotFoundError as e:
         print(f"❌ 配置文件错误: {e}")
         print("\n请确保以下文件存在:")
         print("  • config/config.yaml")
         print("  • config/frequency_words.txt")
         print("\n参考项目文档进行正确配置")
+        return False
     except Exception as e:
         print(f"❌ 程序运行错误: {e}")
-        raise
+        if raise_errors:
+            raise
+        traceback.print_exc()
+        return False
+
+
+class ContainerRunner:
+    """容器环境运行器，用于在 Zeabur 等平台保持长时间运行"""
+
+    DEFAULT_CRON = "*/30 * * * *"
+    DEFAULT_TIMEZONE = "Asia/Shanghai"
+
+    def __init__(self):
+        self.timezone_name = os.environ.get("CRON_TIMEZONE", self.DEFAULT_TIMEZONE)
+        self.timezone = self._resolve_timezone(self.timezone_name)
+        self.cron_schedule = os.environ.get("CRON_SCHEDULE", self.DEFAULT_CRON)
+        self.immediate_run = self._get_flag("IMMEDIATE_RUN", True)
+        self.enable_http_server = self._get_flag("ENABLE_HTTP_SERVER", True)
+        self.port = self._resolve_port(os.environ.get("PORT", "8080"))
+        self._http_server: Optional[ThreadingHTTPServer] = None
+        self._http_thread: Optional[threading.Thread] = None
+
+        self._validate_cron_schedule()
+
+    def _resolve_timezone(self, tz_name: str):
+        try:
+            return pytz.timezone(tz_name)
+        except Exception:
+            print(f"⚠️ 无法识别时区 {tz_name}，改用 {self.DEFAULT_TIMEZONE}")
+            return pytz.timezone(self.DEFAULT_TIMEZONE)
+
+    def _resolve_port(self, port_value: str) -> int:
+        try:
+            port = int(port_value)
+            if 0 < port < 65536:
+                return port
+            raise ValueError
+        except Exception:
+            print(f"⚠️ 无法解析端口 {port_value}，改用 8080")
+            return 8080
+
+    def _get_flag(self, env_key: str, default: bool) -> bool:
+        value = os.environ.get(env_key)
+        if value is None:
+            return default
+        normalized = value.strip().lower()
+        if normalized in {"1", "true", "yes", "y", "on"}:
+            return True
+        if normalized in {"0", "false", "no", "n", "off"}:
+            return False
+        return default
+
+    def _validate_cron_schedule(self) -> None:
+        try:
+            croniter(self.cron_schedule, self._now())
+        except Exception:
+            print(
+                f"⚠️ 无法解析 CRON_SCHEDULE={self.cron_schedule}，改用 {self.DEFAULT_CRON}"
+            )
+            self.cron_schedule = self.DEFAULT_CRON
+
+    def _now(self) -> datetime:
+        return datetime.now(self.timezone)
+
+    def _cron_next_run(self, base_time: Optional[datetime] = None) -> datetime:
+        base = base_time or self._now()
+        return croniter(self.cron_schedule, base).get_next(datetime)
+
+    def _start_http_server(self) -> None:
+        output_dir = Path("output")
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        handler = partial(SimpleHTTPRequestHandler, directory=str(output_dir))
+
+        try:
+            server = ThreadingHTTPServer(("0.0.0.0", self.port), handler)
+        except Exception as exc:
+            print(f"❌ 启动内置 HTTP 服务失败: {exc}")
+            print("⚠️ 将继续执行定时任务，但无法提供静态文件访问。")
+            return
+
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+
+        self._http_server = server
+        self._http_thread = thread
+
+        print(
+            f"🌐 内置 HTTP 服务已启动: http://0.0.0.0:{self.port} (目录: {output_dir.resolve()})"
+        )
+
+    def _shutdown_http_server(self) -> None:
+        if self._http_server is not None:
+            try:
+                self._http_server.shutdown()
+                self._http_server.server_close()
+            except Exception:
+                pass
+
+    def _run_once_with_handling(self) -> None:
+        success = run_once(raise_errors=False)
+        timestamp = self._now().strftime("%Y-%m-%d %H:%M:%S %Z")
+        if success:
+            print(f"✅ 定时任务执行完成 ({timestamp})")
+        else:
+            print(f"⚠️ 定时任务执行失败 ({timestamp})，等待下一次调度")
+
+    def _log_next_run(self, next_run: datetime) -> None:
+        print(f"⏭️ 下一次执行时间: {next_run.strftime('%Y-%m-%d %H:%M:%S %Z')}")
+
+    def run(self) -> None:
+        print("⏰ RUN_MODE=cron，进入定时执行模式")
+
+        if self.enable_http_server:
+            self._start_http_server()
+        else:
+            print("ℹ️ 已禁用内置 HTTP 服务")
+
+        anchor_time = self._now()
+
+        if self.immediate_run:
+            print("▶️ 启动时立即执行一次任务")
+            self._run_once_with_handling()
+            anchor_time = self._now()
+        else:
+            print("⏳ 启动时跳过立即执行，等待调度时间")
+
+        next_run = self._cron_next_run(anchor_time)
+        self._log_next_run(next_run)
+
+        try:
+            while True:
+                now = self._now()
+                wait_seconds = (next_run - now).total_seconds()
+
+                if wait_seconds > 0:
+                    sleep_duration = min(wait_seconds, 60)
+                    time.sleep(sleep_duration)
+                    continue
+
+                print(
+                    f"▶️ {now.strftime('%Y-%m-%d %H:%M:%S %Z')} 达到调度时间，开始执行任务"
+                )
+                self._run_once_with_handling()
+                next_run = self._cron_next_run()
+                self._log_next_run(next_run)
+        except KeyboardInterrupt:
+            print("👋 收到停止信号，正在退出定时任务循环")
+        finally:
+            self._shutdown_http_server()
+
+
+def _determine_run_mode() -> str:
+    run_mode_raw = os.environ.get("RUN_MODE", "").strip().lower()
+    run_mode_map = {
+        "cron": "cron",
+        "once": "once",
+        "single": "once",
+        "manual": "once",
+    }
+
+    if run_mode_raw:
+        normalized = run_mode_map.get(run_mode_raw)
+        if normalized:
+            return normalized
+        print(f"⚠️ 未识别的 RUN_MODE={run_mode_raw}，回退到单次执行")
+        return "once"
+
+    if os.environ.get("ZEABUR"):
+        return "cron"
+
+    return "once"
+
+
+def main():
+    run_mode = _determine_run_mode()
+
+    if run_mode == "cron":
+        runner = ContainerRunner()
+        runner.run()
+    else:
+        run_once(raise_errors=True)
 
 
 if __name__ == "__main__":
