@@ -47,11 +47,13 @@ case "${RUN_MODE:-cron}" in
     }
     trap cleanup EXIT INT TERM
 
-    # 在后台启动一个简单的 http 服务器，用于响应健康检查和提供报告访问
-    echo "🌐 启动内置 Web 服务器以提供报告访问和响应健康检查..."
-    cd /app/output
-    python3 -m http.server "${PORT:-8080}" &
-    HTTP_PID=$!
+    start_http_server() {
+        echo "🌐 启动内置 Web 服务器以提供报告访问和响应健康检查..."
+        (cd /app/output && python3 -m http.server "${PORT:-8080}") &
+        HTTP_PID=$!
+    }
+
+    start_http_server
 
     # 立即执行一次（如果配置了）——在 HTTP 服务启动后触发，确保端口可用
     if [ "${IMMEDIATE_RUN:-false}" = "true" ]; then
@@ -62,9 +64,27 @@ case "${RUN_MODE:-cron}" in
 
     # 等待后台任务，避免产生僵尸进程
     if [ -n "${IMMEDIATE_PID:-}" ]; then
+        set +e
         wait "${IMMEDIATE_PID}"
+        IMMEDIATE_STATUS=$?
+        set -e
+        if [ "${IMMEDIATE_STATUS}" -ne 0 ]; then
+            echo "⚠️ 立即执行任务异常退出 (状态码: ${IMMEDIATE_STATUS})，继续等待 HTTP 服务。"
+        fi
     fi
-    wait "${HTTP_PID}"
+
+    while true; do
+        set +e
+        wait "${HTTP_PID}"
+        HTTP_STATUS=$?
+        set -e
+        if [ "${HTTP_STATUS}" -eq 0 ]; then
+            echo "ℹ️ HTTP 服务已正常退出。"
+            break
+        fi
+        echo "❌ HTTP 服务异常退出 (状态码: ${HTTP_STATUS})，正在尝试重启..."
+        start_http_server
+    done
     ;;
 *)
     exec "$@"
